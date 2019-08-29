@@ -12,7 +12,7 @@ from datetime import datetime, timedelta
 
 import logging
 
-logger = logging.getLogger('')
+logger = logging.getLogger(__name__)
 
 
 def app_registration(app_id):
