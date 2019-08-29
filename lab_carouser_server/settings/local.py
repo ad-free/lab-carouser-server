@@ -24,6 +24,17 @@ LANGUAGES = (
 )
 LANGUAGE_CODE = 'en'
 
+REST_FRAMEWORK = {
+	'DEFAULT_AUTHENTICATION_CLASSES': (
+		'rest_framework.authentication.BasicAuthentication',
+		'rest_framework.authentication.TokenAuthentication'
+	),
+	'DEFAULT_PERMISSION_CLASSES': (
+		'rest_framework.permissions.IsAuthenticated',
+	),
+	'EXCEPTION_HANDLER': 'apps.commons.utils.custom_exception_handler'
+}
+
 DATABASES = {
 	'default': {
 		'ENGINE': 'django.db.backends.mysql',
