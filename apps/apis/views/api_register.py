@@ -34,7 +34,7 @@ class Register(ViewSet):
 		self.commons = Commons()
 		self.message = _('Congratulations. You have successfully registered.')
 		self.error_msg = _('Something wrong. Please try again.')
-		
+
 	@transaction.atomic()
 	def create(self, request):
 		self.commons.active_language(language=request.META.get('HTTP_LANGUAGE', getattr(settings, 'LANGUAGE_CODE')))

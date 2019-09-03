@@ -30,7 +30,7 @@ class Commons:
 		self.jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 		self.jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 		self.jwt_decode_handler = api_settings.JWT_DECODE_HANDLER
-	
+
 	def active_language(self, language):
 		try:
 			translation.activate(language)
@@ -38,7 +38,7 @@ class Commons:
 		except Exception as e:
 			self.logs(level=3, message=str(e), name=__name__)
 		return False
-	
+
 	def response(self, _status=None, data=None, message=None, error_msg=None):
 		return Response({
 			'status_code': _status if _status else self.status.HTTP_4000_BAD_REQUEST,
@@ -74,7 +74,7 @@ class Commons:
 			token = token.key
 		# cache.set(obj_user.username, token, getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT))
 		return token
-	
+
 	@classmethod
 	def paginator(cls, obj, page=1, data_on_page=30):
 		paginator = Paginator(obj, data_on_page)
@@ -154,10 +154,10 @@ class Status:
 
 class API:
 	""" Manage multiple api name """
-	
+
 	def __init__(self):
 		pass
-	
+
 	@classmethod
 	def get_api_name(cls, api_type='', api_name=''):
 		""" :return API name """
@@ -188,5 +188,5 @@ class API:
 				'': 'Nothing here!'
 			}
 		}
-		
+
 		return apis[api_type][api_name]
