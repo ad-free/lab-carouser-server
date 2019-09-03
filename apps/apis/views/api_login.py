@@ -21,7 +21,7 @@ class Login(APIView):
 	""" API Login """
 	
 	authentication_classes = []
-	permission_classes = [partial(APIAccessPermission, API(api_type='auth', api_name='login').get_api_name())]
+	permission_classes = [partial(APIAccessPermission, API().get_api_name('auth', 'login'))]
 	renderer_classes = [JSONRenderer]
 	
 	def __init__(self, **kwargs):
