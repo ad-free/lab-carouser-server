@@ -2,20 +2,26 @@
 from __future__ import unicode_literals
 
 from django.conf import settings
-from django.utils import translation
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import logout
 
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.views import APIView
+from rest_framework.renderers import JSONRenderer
 
-from apps.commons.utils import Commons, Status
+from apps.apis.utils import APIAccessPermission
+from apps.commons.utils import Commons, Status, API
+
+from functools import partial
 
 
 class Logout(APIView):
 	""" Logout to system """
 	
-	permission_classes = (IsAuthenticated,)
+	authentication_classes = [TokenAuthentication]
+	permission_classes = [IsAuthenticated & partial(APIAccessPermission, API('auth', 'logout').get_api_name())]
+	renderer_classes = [JSONRenderer]
 	
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
@@ -25,7 +31,7 @@ class Logout(APIView):
 		self.error_msg = _('You must be login to system.')
 	
 	def post(self, request):
-		translation.activate(request.META.get('HTTP_LANGUAGE', getattr(settings, 'LANGUAGE_CODE')))
+		self.commons.active_language(language=request.META.get('HTTP_LANGUAGE', getattr(settings, 'LANGUAGE_CODE')))
 		try:
 			request.user.auth_token.delete()
 			logout(request)
