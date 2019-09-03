@@ -2,24 +2,27 @@
 from __future__ import unicode_literals
 
 from django.conf import settings
-from django.utils import translation
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import authenticate, login
 
+
 from rest_framework.views import APIView
+from rest_framework.renderers import JSONRenderer
 
 from apps.apis.serializers.api_login import LoginSerializer
 from apps.apis.utils import APIAccessPermission
 
-from apps.commons.utils import Commons, Status
+from apps.commons.utils import Commons, Status, API
 
 from functools import partial
 
 
 class Login(APIView):
-	""" Login to system """
+	""" API Login """
 	
-	permission_classes = (partial(APIAccessPermission, 'api_auth_login'),)
+	authentication_classes = []
+	permission_classes = [partial(APIAccessPermission, API(api_type='auth', api_name='login').get_api_name())]
+	renderer_classes = [JSONRenderer]
 	
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
@@ -29,7 +32,7 @@ class Login(APIView):
 		self.message = _('You are successfully logged in.')
 	
 	def post(self, request):
-		translation.activate(request.META.get('HTTP_LANGUAGE', getattr(settings, 'LANGUAGE_CODE')))
+		self.commons.active_language(language=request.META.get('HTTP_LANGUAGE', getattr(settings, 'LANGUAGE_CODE')))
 		serializer = LoginSerializer(data=self.request.data)
 		
 		if serializer.is_valid():

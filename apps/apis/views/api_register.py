@@ -2,17 +2,21 @@
 from __future__ import unicode_literals
 
 from django.conf import settings
-from django.utils import translation
+
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.hashers import make_password
 
 from rest_framework.views import APIView
+from rest_framework.renderers import JSONRenderer
 
+from apps.apis.utils import APIAccessPermission
 from apps.users.models import Users
 
 from apps.apis.serializers.api_register import RegisterSerializer
 
-from apps.commons.utils import Commons, Status
+from apps.commons.utils import Commons, Status, API
+
+from functools import partial
 
 import logging
 
@@ -22,7 +26,9 @@ logging = logging.getLogger(__name__)
 class Register(APIView):
 	""" Register your account. """
 	
-	permission_classes = ()
+	authentication_classes = []
+	permission_classes = [partial(APIAccessPermission, API('auth', 'register').get_api_name())]
+	renderer_classes = [JSONRenderer]
 	
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
@@ -32,7 +38,7 @@ class Register(APIView):
 		self.message = _('Congratulations. You have successfully registered.')
 	
 	def post(self, request):
-		translation.activate(request.META.get('HTTP_LANGUAGE', getattr(settings, 'LANGUAGE_CODE')))
+		self.commons.active_language(language=request.META.get('HTTP_LANGUAGE', getattr(settings, 'LANGUAGE_CODE')))
 		serializer = RegisterSerializer(data=self.request.data)
 		if serializer.is_valid():
 			if not serializer.compare_pwd(data=request.data):

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.utils import translation
+
 from rest_framework.views import Response, exception_handler
 from rest_framework.authtoken.models import Token
 
@@ -23,6 +25,14 @@ class Commons:
 	def __init__(self):
 		self.logging = logging.getLogger()
 		self.status = Status()
+	
+	def active_language(self, language):
+		try:
+			translation.activate(language)
+			return True
+		except Exception as e:
+			self.logs(level=3, message=str(e), name=__name__)
+		return False
 	
 	def response_format(self, _status=None, data=None, message=None, error_msg=None):
 		return Response({
@@ -122,3 +132,34 @@ class Status:
 		self.HTTP_5009_BANDWIDTH_LIMIT_EXCEEDED = 5009
 		self.HTTP_5010_NOT_EXTENDED = 5010
 		self.HTTP_5011_NETWORK_AUTHENTICATION_REQUIRED = 5011
+
+
+class API:
+	""" Manage multiple api name """
+	
+	def __init__(self, api_type='', api_name=''):
+		self.api_type = api_type
+		self.api_name = api_name
+	
+	def get_api_name(self):
+		""" :return API name """
+		apis = {
+			'auth': {
+				'login': 'api_auth_login',
+				'logout': 'api_auth_logout',
+				'register': 'api_auth_register',
+			},
+			'profile': {
+				'get': 'api_profile_get',
+				'update': 'api_profile_update',
+			},
+			'friend': {
+				'get': 'api_friend_get',
+				'remove': 'api_friend_remove',
+			},
+			'': {
+				'': 'Nothing here!'
+			}
+		}
+		
+		return apis[self.api_type][self.api_name]
