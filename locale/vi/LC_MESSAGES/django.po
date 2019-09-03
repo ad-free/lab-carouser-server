@@ -1,0 +1,144 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-09-03 10:38+0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: apps/apis/models.py:10
+msgid "Active"
+msgstr "Kích hoạt"
+
+#: apps/apis/models.py:11
+msgid "Inactive"
+msgstr ""
+
+#: apps/apis/models.py:15
+msgid "iOS"
+msgstr ""
+
+#: apps/apis/models.py:16
+msgid "Android"
+msgstr ""
+
+#: apps/apis/models.py:17
+msgid "Website"
+msgstr ""
+
+#: apps/apis/models.py:39
+msgid "Package"
+msgstr ""
+
+#: apps/apis/models.py:40
+msgid "ID"
+msgstr ""
+
+#: apps/apis/models.py:41
+msgid "Type"
+msgstr ""
+
+#: apps/apis/models.py:42
+msgid "Provide server account to this user"
+msgstr ""
+
+#: apps/apis/models.py:42
+msgid "Server status"
+msgstr ""
+
+#: apps/apis/views/api_login.py:29 apps/apis/views/api_register.py:35
+msgid "Something wrong. Please try again."
+msgstr "Lỗi. Vui lòng thử lại sau."
+
+#: apps/apis/views/api_login.py:30
+msgid "You are successfully logged in."
+msgstr "Bạn đã đăng nhập thành công."
+
+#: apps/apis/views/api_login.py:47
+msgid "User does not exists."
+msgstr "Người dùng không tồn tại."
+
+#: apps/apis/views/api_logout.py:30
+msgid "Logout successful."
+msgstr "Đăng xuất thành công."
+
+#: apps/apis/views/api_logout.py:31
+msgid "You must be login to system."
+msgstr "Bạn phải đăng nhập vào hệ thống."
+
+#: apps/apis/views/api_register.py:36
+msgid "Congratulations. You have successfully registered."
+msgstr "Chúc mừng. Bạn đã đăng ký thành công."
+
+#: apps/apis/views/api_register.py:53
+msgid "User always exists."
+msgstr "Người dùng không tồn tại."
+
+#: apps/apis/views/api_register.py:55
+msgid "Password does not match."
+msgstr "Mật khẩu không đúng."
+
+#: apps/location/models.py:17 apps/location/models.py:36
+#: apps/location/models.py:52
+msgid "Order number"
+msgstr ""
+
+#: apps/location/models.py:21
+msgid "Cities"
+msgstr "Thành phố"
+
+#: apps/users/admin.py:28 apps/users/admin.py:49
+msgid "Personal info"
+msgstr "Thông tin người dùng."
+
+#: apps/users/admin.py:50
+msgid "Permissions"
+msgstr "Quyền truy cập"
+
+#: apps/users/models.py:13
+msgid "Single"
+msgstr "Độc thân"
+
+#: apps/users/models.py:14
+msgid "In a relationship"
+msgstr "Đang trong mối quan hệ"
+
+#: apps/users/models.py:15
+msgid "Married"
+msgstr "Đã kết hôn"
+
+#: apps/users/models.py:19
+msgid "Unknown"
+msgstr "Không xác định"
+
+#: apps/users/models.py:20
+msgid "Male"
+msgstr "Nam"
+
+#: apps/users/models.py:21
+msgid "Female"
+msgstr "Nữ"
+
+#: apps/users/models.py:33 apps/users/models.py:48
+msgid "Online"
+msgstr "Online"
+
+#: lab_carouser_server/settings/local.py:22
+msgid "English"
+msgstr "Tiếng Anh"
+
+#: lab_carouser_server/settings/local.py:23
+msgid "Vietnamese"
+msgstr "Tiếng Việt"

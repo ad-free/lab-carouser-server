@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 
 from django.utils.dateformat import format
-from django.utils.translation import ugettext_lazy as _
 
 from rest_framework import permissions
 
@@ -29,7 +28,7 @@ def app_registration(app_id):
 
 
 class APIAccessPermission(permissions.BasePermission):
-	message = _('Page was not found on this server.')
+	# message = _('Page was not found on this server.')
 	
 	def __init__(self, stack):
 		self.stack = stack
