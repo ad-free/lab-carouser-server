@@ -27,7 +27,7 @@ class Register(APIView):
 	""" Register your account. """
 	
 	authentication_classes = []
-	permission_classes = [partial(APIAccessPermission, API('auth', 'register').get_api_name())]
+	permission_classes = [partial(APIAccessPermission, API().get_api_name('auth', 'register'))]
 	renderer_classes = [JSONRenderer]
 	
 	def __init__(self, **kwargs):

@@ -137,11 +137,11 @@ class Status:
 class API:
 	""" Manage multiple api name """
 	
-	def __init__(self, api_type='', api_name=''):
-		self.api_type = api_type
-		self.api_name = api_name
+	def __init__(self):
+		pass
 	
-	def get_api_name(self):
+	@classmethod
+	def get_api_name(cls, api_type='', api_name=''):
 		""" :return API name """
 		apis = {
 			'auth': {
@@ -162,4 +162,4 @@ class API:
 			}
 		}
 		
-		return apis[self.api_type][self.api_name]
+		return apis[api_type][api_name]
