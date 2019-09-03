@@ -20,7 +20,7 @@ class Logout(APIView):
 	""" Logout to system """
 	
 	authentication_classes = [TokenAuthentication]
-	permission_classes = [IsAuthenticated & partial(APIAccessPermission, API('auth', 'logout').get_api_name())]
+	permission_classes = [IsAuthenticated & partial(APIAccessPermission, API().get_api_name('auth', 'logout'))]
 	renderer_classes = [JSONRenderer]
 	
 	def __init__(self, **kwargs):
