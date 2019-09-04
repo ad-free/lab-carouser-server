@@ -18,10 +18,6 @@ from apps.commons.utils import Commons, Status, API
 
 from functools import partial
 
-import logging
-
-logging = logging.getLogger(__name__)
-
 
 class Register(APIView):
 	""" Register your account. """
