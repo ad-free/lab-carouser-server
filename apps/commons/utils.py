@@ -40,9 +40,7 @@ class Commons:
 			'result': True if _status == self.status.HTTP_2000_OK else False,
 			'data': [data] if data else [],
 			'message': message if message else '',
-			'errors': [{
-				'message': error_msg
-			}] if error_msg else []
+			'errors': [error_msg] if error_msg else []
 		}, status=200)
 	
 	def logs(self, level=99, message='', name=''):
@@ -150,7 +148,7 @@ class API:
 				'register': 'api_auth_register',
 			},
 			'profile': {
-				'get': 'api_profile_get',
+				'detail': 'api_profile_detail',
 				'update': 'api_profile_update',
 			},
 			'friend': {
