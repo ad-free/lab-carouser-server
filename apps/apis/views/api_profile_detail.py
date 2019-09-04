@@ -53,16 +53,13 @@ class ProfileDetail(APIView):
 			})
 		except Address.DoesNotExist:
 			self.commons.logs(level=2, message='{} {}'.format(obj_user.username, _('Address does not exists.')), name=__name__)
-		
-		if obj_user:
-			self.data.update({
-				'first_name': obj_user.first_name,
-				'last_name': obj_user.last_name,
-				'email': obj_user.email,
-				'sex': obj_user.sex,
-				'relationship_status': obj_user.relationship_status,
-				'last_login': obj_user.last_login if obj_user.last_login else '',
-				'date_joined': obj_user.date_joined,
-			})
-			return self.commons.response_format(_status=self.status.HTTP_2000_OK, data=self.data)
-		return self.commons.response_format(_status=self.status.HTTP_4000_BAD_REQUEST, error_msg=self.error_msg)
+		self.data.update({
+			'first_name': obj_user.first_name,
+			'last_name': obj_user.last_name,
+			'email': obj_user.email,
+			'sex': obj_user.sex,
+			'relationship_status': obj_user.relationship_status,
+			'last_login': obj_user.last_login if obj_user.last_login else '',
+			'date_joined': obj_user.date_joined,
+		})
+		return self.commons.response(_status=self.status.HTTP_2000_OK, data=self.data)
