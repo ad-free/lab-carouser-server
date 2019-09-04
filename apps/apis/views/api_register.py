@@ -27,7 +27,7 @@ class Register(ViewSet):
 	permission_classes = [partial(APIAccessPermission, API().get_api_name('auth', 'register'))]
 	renderer_classes = [JSONRenderer]
 	serializer_class = RegisterSerializer
-	
+
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
 		self.status = Status()
