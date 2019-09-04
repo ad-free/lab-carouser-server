@@ -24,7 +24,7 @@ class Login(ViewSet):
 	permission_classes = [partial(APIAccessPermission, API().get_api_name('auth', 'login'))]
 	renderer_classes = [JSONRenderer]
 	serializer_class = LoginSerializer
-	
+
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
 		self.token = ''
