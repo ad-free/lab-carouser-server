@@ -47,7 +47,7 @@ class Register(APIView):
 						'token': self.commons.init_token(obj_user)
 					}
 					self.commons.logs(level=1, message=str(obj_user) + ' has successfully registered.', name=self.__class__)
-					return self.commons.response_format(_status=self.status.HTTP_2000_OK, data=data, message=self.message)
+					return self.commons.response(_status=self.status.HTTP_2000_OK, data=data, message=self.message)
 				self.error_msg = _('User always exists.')
 			else:
 				self.error_msg = _('Password does not match.')
@@ -55,4 +55,4 @@ class Register(APIView):
 			self.error_msg = serializer.errors
 		
 		self.commons.logs(level=2, message=self.error_msg, name=self.__class__)
-		return self.commons.response_format(_status=self.status.HTTP_4000_BAD_REQUEST, error_msg=self.error_msg)
+		return self.commons.response(_status=self.status.HTTP_4000_BAD_REQUEST, error_msg=self.error_msg)

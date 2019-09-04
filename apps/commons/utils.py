@@ -15,7 +15,7 @@ def custom_exception_handler(exc, context):
 	
 	if response is not None:
 		commons.logs(level=3, message=response.data['detail'], name=context['view'])
-		response = commons.response_format(_status=commons.status.HTTP_4001_UNAUTHORIZED, error_msg=response.data['detail'])
+		response = commons.response(_status=commons.status.HTTP_4001_UNAUTHORIZED, error_msg=response.data['detail'])
 	
 	return response
 
@@ -34,7 +34,7 @@ class Commons:
 			self.logs(level=3, message=str(e), name=__name__)
 		return False
 	
-	def response_format(self, _status=None, data=None, message=None, error_msg=None):
+	def response(self, _status=None, data=None, message=None, error_msg=None):
 		return Response({
 			'status_code': _status if _status else self.status.HTTP_4000_BAD_REQUEST,
 			'result': True if _status == self.status.HTTP_2000_OK else False,
@@ -154,6 +154,9 @@ class API:
 			'friend': {
 				'get': 'api_friend_get',
 				'remove': 'api_friend_remove',
+			},
+			'location': {
+				'list': 'api_location_list',
 			},
 			'': {
 				'': 'Nothing here!'
