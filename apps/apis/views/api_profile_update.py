@@ -3,13 +3,15 @@ from __future__ import unicode_literals
 
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
+from django.db import transaction
+from django.db import IntegrityError
 
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
 
-from apps.location.models import City, Ward, District, Address
+from apps.location.models import Address
 
 from apps.apis.serializers.api_profile_update import ProfileUpdateSerializer
 
@@ -33,10 +35,12 @@ class ProfileUpdate(APIView):
 		self.error_msg = _('Something wrong. Please try again.')
 		self.message = ''
 	
+	@transaction.atomic()
 	def post(self, request):
 		self.commons.active_language(language=request.META.get('HTTP_LANGUAGE', getattr(settings, 'LANGUAGE_CODE')))
 		serializer = ProfileUpdateSerializer(data=self.request.data)
 		if serializer.is_valid():
+			self.error_msg = ''
 			obj_user = self.request.user
 			obj_user.first_name = serializer.data['first_name']
 			obj_user.last_name = serializer.data['last_name']
@@ -45,26 +49,19 @@ class ProfileUpdate(APIView):
 			obj_user.relationship_status = serializer.data['relationship_status']
 			obj_user.save()
 			
-			if 'city_id' in serializer.data and 'district_id' in serializer.data and 'ward_id' in serializer.data:
+			if ('city_id' and 'district_id' and 'ward_id') in serializer.data:
 				try:
-					obj_city = City.objects.get(id=serializer.data['city_id'])
-					obj_district = District.objects.get(id=serializer.data['district_id'], city=obj_city)
-					obj_ward = Ward.objects.get(id=serializer.data['ward_id'], district=obj_district)
-					Address.objects.update_or_create(
-						user=obj_user,
-						city=obj_city,
-						district=obj_district,
-						ward=obj_ward
-					)
-				except City.DoesNotExist:
-					self.commons.logs(level=3, message=_('City does not exists.'), name=__name__)
-				except District.DoesNotExist:
-					self.commons.logs(level=3, message=_('District does not exists.'), name=__name__)
-				except Ward.DoesNotExist:
-					self.commons.logs(level=3, message=_('Ward does not exists.'), name=__name__)
-				except Exception as e:
+					with transaction.atomic():
+						Address.objects.select_related('ward__district__city').update_or_create(
+							user=obj_user,
+							city_id=serializer.data['city_id'],
+							district_id=serializer.data['district_id'],
+							ward_id=serializer.data['ward_id']
+						)
+				except IntegrityError as e:
+					self.error_msg = _('Please check your address.')
 					self.commons.logs(level=3, message=str(e), name=__name__)
-			return self.commons.response(_status=self.status.HTTP_2000_OK, message=_('Update successful.'))
+			return self.commons.response(_status=self.status.HTTP_2000_OK, message=_('Update successful.'), error_msg=self.error_msg)
 		else:
 			self.error_msg = serializer.errors
 		return self.commons.response(_status=self.status.HTTP_4000_BAD_REQUEST, error_msg=self.error_msg)

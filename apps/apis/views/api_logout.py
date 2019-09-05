@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
+from django.db import transaction
 from django.contrib.auth import logout
 
 from rest_framework.permissions import IsAuthenticated
@@ -33,8 +34,9 @@ class Logout(APIView):
 	def post(self, request):
 		self.commons.active_language(language=request.META.get('HTTP_LANGUAGE', getattr(settings, 'LANGUAGE_CODE')))
 		try:
-			request.user.auth_token.delete()
-			logout(request)
+			with transaction.atomic():
+				request.user.auth_token.delete()
+				logout(request)
 			self.commons.logs(level=1, message=self.message, name=self.__class__)
 			return self.commons.response(_status=self.status.HTTP_2000_OK, message=self.message)
 		except Exception as e:
