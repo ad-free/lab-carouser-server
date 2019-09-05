@@ -5,6 +5,7 @@ from django.conf import settings
 
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.hashers import make_password
+from django.db import transaction
 
 from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
@@ -33,6 +34,7 @@ class Register(APIView):
 		self.error_msg = _('Something wrong. Please try again.')
 		self.message = _('Congratulations. You have successfully registered.')
 	
+	@transaction.atomic()
 	def post(self, request):
 		self.commons.active_language(language=request.META.get('HTTP_LANGUAGE', getattr(settings, 'LANGUAGE_CODE')))
 		serializer = RegisterSerializer(data=self.request.data)
