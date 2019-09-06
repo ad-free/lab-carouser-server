@@ -5,10 +5,12 @@ from .base import *
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
+import datetime
+
 DEBUG = True
 
 INSTALLED_APPS += [
-	'rest_framework.authtoken',
+	# 'rest_framework.authtoken',
 	'apps.apis',
 	'apps.location',
 	'apps.users',
@@ -26,13 +28,49 @@ LANGUAGE_CODE = 'en'
 
 REST_FRAMEWORK = {
 	'DEFAULT_AUTHENTICATION_CLASSES': (
+		'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
 		'rest_framework.authentication.BasicAuthentication',
-		'rest_framework.authentication.TokenAuthentication'
+		# 'rest_framework.authentication.TokenAuthentication'
 	),
 	'DEFAULT_PERMISSION_CLASSES': (
 		'rest_framework.permissions.IsAuthenticated',
 	),
 	'EXCEPTION_HANDLER': 'apps.commons.utils.custom_exception_handler'
+}
+
+JWT_AUTH = {
+	'JWT_ENCODE_HANDLER':
+		'rest_framework_jwt.utils.jwt_encode_handler',
+
+	'JWT_DECODE_HANDLER':
+		'rest_framework_jwt.utils.jwt_decode_handler',
+
+	'JWT_PAYLOAD_HANDLER':
+		'rest_framework_jwt.utils.jwt_payload_handler',
+
+	'JWT_PAYLOAD_GET_USER_ID_HANDLER':
+		'rest_framework_jwt.utils.jwt_get_user_id_from_payload_handler',
+
+	'JWT_RESPONSE_PAYLOAD_HANDLER':
+		'rest_framework_jwt.utils.jwt_response_payload_handler',
+
+	'JWT_SECRET_KEY': settings.SECRET_KEY,
+	'JWT_GET_USER_SECRET_KEY': None,
+	'JWT_PUBLIC_KEY': None,  # RS256, RS384, or RS512
+	'JWT_PRIVATE_KEY': None,  # RS256, RS384, or RS512
+	'JWT_ALGORITHM': 'HS256',
+	'JWT_VERIFY': True,
+	'JWT_VERIFY_EXPIRATION': True,
+	'JWT_LEEWAY': 0,
+	'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=60),
+	'JWT_AUDIENCE': None,
+	'JWT_ISSUER': None,
+
+	'JWT_ALLOW_REFRESH': False,
+	'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
+
+	'JWT_AUTH_HEADER_PREFIX': 'Token',
+	'JWT_AUTH_COOKIE': None,
 }
 
 DATABASES = {
@@ -43,6 +81,19 @@ DATABASES = {
 		'PASSWORD': 'admin123',
 		'HOST': '127.0.0.1',
 		'PORT': 33060,
+	}
+}
+
+CACHE_TTL = 60  # seconds
+
+CACHES = {
+	'default': {
+		'BACKEND': 'django_redis.cache.RedisCache',
+		'LOCATION': 'redis://127.0.0.1:6379/',
+		# 'TIMEOUT': 0,
+		'OPTIONS': {
+			'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+		},
 	}
 }
 
