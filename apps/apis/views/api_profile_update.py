@@ -5,7 +5,7 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.db import transaction
 
-from rest_framework.authentication import TokenAuthentication
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.renderers import JSONRenderer
 from rest_framework.viewsets import ViewSet
@@ -20,7 +20,7 @@ from functools import partial
 class ProfileUpdate(ViewSet):
 	""" Update profile """
 	
-	authentication_classes = [TokenAuthentication]
+	authentication_classes = [JSONWebTokenAuthentication]
 	permission_classes = [IsAuthenticated & partial(APIAccessPermission, API().get_api_name('profile', 'update'))]
 	renderer_classes = [JSONRenderer]
 	serializer_class = ProfileUpdateSerializer
