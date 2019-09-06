@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
-from rest_framework.authentication import TokenAuthentication
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
@@ -22,8 +22,8 @@ from functools import partial
 class LocationList(APIView):
 	""" Get city list """
 	
-	authentication_classes = [TokenAuthentication]
-	permission_classes = [IsAuthenticated and partial(APIAccessPermission, API().get_api_name('location', 'list'))]
+	authentication_classes = [JSONWebTokenAuthentication]
+	permission_classes = [IsAuthenticated & partial(APIAccessPermission, API().get_api_name('location', 'list'))]
 	renderer_classes = [JSONRenderer]
 	
 	def __init__(self, **kwargs):

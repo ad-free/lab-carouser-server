@@ -2,9 +2,9 @@
 from __future__ import unicode_literals
 
 from django.conf import settings
+from django.core.cache import cache
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import authenticate, login
-
 
 from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
@@ -26,6 +26,7 @@ class Login(APIView):
 	
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
+		self.token = ''
 		self.status = Status()
 		self.commons = Commons()
 		self.error_msg = _('Something wrong. Please try again.')
@@ -39,11 +40,12 @@ class Login(APIView):
 			obj_user = authenticate(username=serializer.data['username'], password=serializer.data['password'])
 			
 			if obj_user is not None:
-				login(request, obj_user)
+				if obj_user.username in cache:
+					self.token = cache.get(self.request.user.username)
 				data = {
-					'token': self.commons.init_token(obj_user)
+					'token': self.commons.init_token(obj_user, self.token)
 				}
-				
+				login(request, obj_user)
 				self.commons.logs(level=1, message=str(obj_user) + ' has successfully logged in.', name=__name__)
 				return self.commons.response(_status=self.status.HTTP_2000_OK, data=data, message=self.message)
 			self.error_msg = _('User does not exists.')
