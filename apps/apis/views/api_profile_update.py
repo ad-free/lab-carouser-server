@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.db import transaction
 from django.db import IntegrityError
 
-from rest_framework.authentication import TokenAuthentication
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
@@ -24,7 +24,7 @@ from functools import partial
 class ProfileUpdate(APIView):
 	""" Update profile """
 	
-	authentication_classes = [TokenAuthentication]
+	authentication_classes = [JSONWebTokenAuthentication]
 	permission_classes = [IsAuthenticated & partial(APIAccessPermission, API().get_api_name('profile', 'update'))]
 	renderer_classes = [JSONRenderer]
 	

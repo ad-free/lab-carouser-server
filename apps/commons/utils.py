@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.conf import settings
+from django.core.cache import cache
+from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.utils import translation
 
+from rest_framework_jwt.settings import api_settings
 from rest_framework.views import Response, exception_handler
-from rest_framework.authtoken.models import Token
 
+import jwt
 import logging
 
 
@@ -25,6 +29,9 @@ class Commons:
 	def __init__(self):
 		self.logging = logging.getLogger()
 		self.status = Status()
+		self.jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+		self.jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+		self.jwt_decode_handler = api_settings.JWT_DECODE_HANDLER
 	
 	def active_language(self, language):
 		try:
@@ -57,13 +64,14 @@ class Commons:
 		else:
 			return self.logging.critical(msg)
 	
-	def init_token(self, obj_user):
+	def init_token(self, obj_user, token):
 		try:
-			token = obj_user.auth_token.key
-		except Exception as e:
-			self.logging.error(str(e))
-			token = Token.objects.create(user=obj_user)
-			token = token.key
+			self.jwt_decode_handler(token)
+			return token
+		except (jwt.ExpiredSignature, jwt.InvalidTokenError, jwt.InvalidSignatureError):
+			payload = self.jwt_payload_handler(obj_user)
+			token = self.jwt_encode_handler(payload)
+		cache.set(obj_user.username, token, getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT))
 		return token
 
 
@@ -163,4 +171,4 @@ class API:
 			}
 		}
 		
-		return apis[api_type][api_name]
+		return apis.get(api_type, '').get(api_name, '')

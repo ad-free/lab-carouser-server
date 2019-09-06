@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
-from rest_framework.authentication import TokenAuthentication
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
@@ -18,8 +18,8 @@ from functools import partial
 
 
 class ProfileDetail(APIView):
-	authentication_classes = [TokenAuthentication]
-	permission_classes = [IsAuthenticated & partial(APIAccessPermission, API().get_api_name('profile', 'detail'))]
+	authentication_classes = [JSONWebTokenAuthentication]
+	permission_classes = [IsAuthenticated & partial(APIAccessPermission, API().get_api_name('location', 'list'))]
 	renderer_classes = [JSONRenderer]
 	
 	def __init__(self, **kwargs):
