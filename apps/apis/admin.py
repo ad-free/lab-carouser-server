@@ -11,15 +11,16 @@ class FeatureAdmin(admin.ModelAdmin):
 	fields = ('name', 'type', 'brief')
 	list_display = ('name', 'type', 'brief', 'created_at', 'modified_at')
 	search_fields = ('name', 'type')
+	date_hierarchy = 'created_at'
 	ordering = ['name']
 
 
 @admin.register(Registration)
 class RegistrationAdmin(admin.ModelAdmin):
-	fields = ('app_package', 'app_type', 'status', 'features', 'server',)
 	list_display = ('app_package', 'app_id', 'app_type', 'status', 'created_by', 'created_at')
 	filter_horizontal = ('features',)
 	search_fields = ('app_package', 'app_id')
+	date_hierarchy = 'created_at'
 	
 	def get_form(self, request, obj=None, **kwargs):
 		if obj is None:

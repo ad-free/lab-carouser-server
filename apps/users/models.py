@@ -26,7 +26,7 @@ class Friend(models.Model):
 	id = models.UUIDField(primary_key=True, default=uuid.uuid1, editable=False)
 	first_name = models.CharField(max_length=255)
 	last_name = models.CharField(max_length=255)
-	phone_number = models.CharField(max_length=255)
+	phone_number = models.CharField(max_length=255, blank=True)
 	email = models.EmailField(validators=[EmailValidator])
 	sex = models.SmallIntegerField(choices=SEX_OPTIONS, default=0)
 	avatar = models.FileField(blank=True, null=True, upload_to='avatar/%Y/%m/%d/')
@@ -48,6 +48,7 @@ class Users(User):
 	is_online = models.BooleanField(default=False, verbose_name=_('Online'))
 	sex = models.SmallIntegerField(choices=SEX_OPTIONS, default=0)
 	relationship_status = models.SmallIntegerField(choices=RELATIONSHIP_STATUS, default=0)
+	is_update = models.BooleanField(default=False)
 	relationship_with = models.ManyToManyField(Friend, blank=True, related_name='%(class)s_relationship_with')
 	friend = models.ManyToManyField(Friend, blank=True, related_name='%(class)s_friend')
 	

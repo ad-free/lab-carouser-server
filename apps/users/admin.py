@@ -15,7 +15,7 @@ class FriendAdmin(admin.ModelAdmin):
 			'fields': ('first_name', 'last_name', 'phone_number', 'email', 'sex', 'avatar'),
 		}),
 	)
-	list_display = ('email', 'first_name', 'last_name', 'phone_number', 'sex', 'created_at', 'updated_at')
+	list_display = ('email', 'first_name', 'last_name', 'phone_number', 'sex', 'created_at', 'updated_at', 'is_online',)
 	date_hierarchy = 'created_at'
 	search_fields = ('email', 'first_name', 'last_name', 'phone_number',)
 	list_filter = ('sex',)
@@ -26,11 +26,13 @@ class UsersAdmin(UserAdmin):
 	fieldsets = (
 		(None, {'fields': ('username', 'password')}),
 		(_('Personal info'), {'fields': ('first_name', 'last_name', 'email', 'sex', 'relationship_status')}),
+		(_('Friend'), {'fields': ('relationship_with',)}),
 	)
-	list_display = ('username', 'email', 'first_name', 'last_name', 'sex', 'relationship_status', 'last_login',)
-	list_filter = ['date_joined', 'sex', 'relationship_status']
+	list_display = ('username', 'email', 'first_name', 'last_name', 'sex', 'relationship_status', 'last_login', 'is_update')
+	list_filter = ['date_joined', 'sex', 'relationship_status', 'is_update']
+	filter_horizontal = ('relationship_with',)
 	exclude = ('groups',)
-	readonly_fields = ('is_online',)
+	readonly_fields = ('is_online', 'is_update',)
 	date_hierarchy = 'date_joined'
 	ordering = ('username',)
 	

@@ -4,10 +4,9 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import logout
-from django.core.cache import cache
 
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
 
@@ -21,7 +20,7 @@ import base64
 class Logout(APIView):
 	""" Logout to system """
 	
-	authentication_classes = [JSONWebTokenAuthentication]
+	authentication_classes = [TokenAuthentication]
 	permission_classes = [IsAuthenticated & partial(APIAccessPermission, API().get_api_name('auth', 'logout'))]
 	renderer_classes = [JSONRenderer]
 	
@@ -35,7 +34,7 @@ class Logout(APIView):
 	def post(self, request):
 		self.commons.active_language(language=request.META.get('HTTP_LANGUAGE', getattr(settings, 'LANGUAGE_CODE')))
 		try:
-			cache.delete(self.request.user.username)
+			self.request.user.auth_token.delete()
 			logout(request)
 			self.commons.logs(level=1, message=self.message, name=self.__class__)
 			return self.commons.response(_status=self.status.HTTP_2000_OK, message=self.message)

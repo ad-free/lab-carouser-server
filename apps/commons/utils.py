@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.conf import settings
-from django.core.cache import cache
-from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.utils import translation
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
+from rest_framework.authtoken.models import Token
 from rest_framework_jwt.settings import api_settings
 from rest_framework.views import Response, exception_handler
 
-import jwt
 import logging
 
 
@@ -64,15 +62,29 @@ class Commons:
 		else:
 			return self.logging.critical(msg)
 	
-	def init_token(self, obj_user, token):
+	def init_token(self, obj_user):
 		try:
-			self.jwt_decode_handler(token)
-			return token
-		except (jwt.ExpiredSignature, jwt.InvalidTokenError, jwt.InvalidSignatureError):
-			payload = self.jwt_payload_handler(obj_user)
-			token = self.jwt_encode_handler(payload)
-		cache.set(obj_user.username, token, getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT))
+			# self.jwt_decode_handler(token)
+			token = obj_user.auth_token.key
+		except Exception as e:
+			self.logs(level=1, message='{} {}'.format(obj_user.username, str(e)), name=__name__)
+			# payload = self.jwt_payload_handler(obj_user)
+			# token = self.jwt_encode_handler(payload)
+			token = Token.objects.create(user=obj_user)
+			token = token.key
+		# cache.set(obj_user.username, token, getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT))
 		return token
+	
+	@classmethod
+	def paginator(cls, obj, page=1, data_on_page=30):
+		paginator = Paginator(obj, data_on_page)
+		try:
+			data_each_page = paginator.page(page)
+		except PageNotAnInteger:
+			data_each_page = paginator.page(1)
+		except EmptyPage:
+			data_each_page = paginator.page(paginator.num_pages)
+		return data_each_page
 
 
 class Status:
@@ -160,8 +172,12 @@ class API:
 				'update': 'api_profile_update',
 			},
 			'friend': {
-				'get': 'api_friend_get',
+				'add': 'api_friend_add',
 				'remove': 'api_friend_remove',
+				'list': 'api_friend_list',
+				'anonymous': 'api_friend_anonymous',
+				'accept': 'api_friend_accept',
+				'accept_list': 'api_friend_accept_list',
 			},
 			'location': {
 				'list': 'api_location_list',

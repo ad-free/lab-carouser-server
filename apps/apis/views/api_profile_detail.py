@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
@@ -18,7 +18,7 @@ from functools import partial
 
 
 class ProfileDetail(APIView):
-	authentication_classes = [JSONWebTokenAuthentication]
+	authentication_classes = [TokenAuthentication]
 	permission_classes = [IsAuthenticated & partial(APIAccessPermission, API().get_api_name('location', 'list'))]
 	renderer_classes = [JSONRenderer]
 	
@@ -38,7 +38,8 @@ class ProfileDetail(APIView):
 			'date_joined': '',
 			'city': '',
 			'district': '',
-			'ward': ''
+			'ward': '',
+			'is_update': False
 		}
 	
 	def post(self, request):
@@ -61,5 +62,6 @@ class ProfileDetail(APIView):
 			'relationship_status': obj_user.relationship_status,
 			'last_login': obj_user.last_login if obj_user.last_login else '',
 			'date_joined': obj_user.date_joined,
+			'is_update': obj_user.is_update
 		})
 		return self.commons.response(_status=self.status.HTTP_2000_OK, data=self.data)
