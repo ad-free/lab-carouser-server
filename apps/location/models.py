@@ -66,8 +66,8 @@ class Address(models.Model):
 	is_default = models.BooleanField(default=False)
 	user = models.ForeignKey(Users, related_name='%(class)s_user', on_delete=models.CASCADE)
 	city = models.ForeignKey(City, related_name='%(class)s_city', on_delete=models.CASCADE)
-	district = models.ForeignKey(District, related_name='%(class)s_district', on_delete=models.CASCADE)
-	ward = models.ForeignKey(Ward, related_name='%(class)s_ward', on_delete=models.CASCADE)
+	district = models.ForeignKey(District, blank=True, related_name='%(class)s_district', on_delete=models.CASCADE)
+	ward = models.ForeignKey(Ward, blank=True, related_name='%(class)s_ward', on_delete=models.CASCADE)
 	
 	class Meta:
 		verbose_name = 'Address'
