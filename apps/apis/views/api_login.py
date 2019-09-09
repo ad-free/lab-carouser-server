@@ -40,10 +40,8 @@ class Login(APIView):
 			obj_user = authenticate(username=serializer.data['username'], password=serializer.data['password'])
 			
 			if obj_user is not None:
-				if obj_user.username in cache:
-					self.token = cache.get(self.request.user.username)
 				data = {
-					'token': self.commons.init_token(obj_user, self.token)
+					'token': self.commons.init_token(obj_user)
 				}
 				login(request, obj_user)
 				self.commons.logs(level=1, message=str(obj_user) + ' has successfully logged in.', name=__name__)

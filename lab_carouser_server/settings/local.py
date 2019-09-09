@@ -10,10 +10,11 @@ import datetime
 DEBUG = True
 
 INSTALLED_APPS += [
-	# 'rest_framework.authtoken',
+	'rest_framework.authtoken',
 	'apps.apis',
 	'apps.location',
 	'apps.users',
+	'apps.relationships',
 ]
 
 TIME_ZONE = 'Asia/Ho_Chi_Minh'
@@ -28,9 +29,9 @@ LANGUAGE_CODE = 'en'
 
 REST_FRAMEWORK = {
 	'DEFAULT_AUTHENTICATION_CLASSES': (
-		'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+		# 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
 		'rest_framework.authentication.BasicAuthentication',
-		# 'rest_framework.authentication.TokenAuthentication'
+		'rest_framework.authentication.TokenAuthentication'
 	),
 	'DEFAULT_PERMISSION_CLASSES': (
 		'rest_framework.permissions.IsAuthenticated',
