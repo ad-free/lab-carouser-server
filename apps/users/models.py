@@ -5,7 +5,10 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.core.validators import EmailValidator
 
+from apps.location.models import City
 from apps.auth.models import User
+from apps.social_network.models import SocialNetwork
+
 
 import uuid
 
@@ -31,7 +34,8 @@ class Friend(models.Model):
 	sex = models.SmallIntegerField(choices=SEX_OPTIONS, default=0)
 	avatar = models.FileField(blank=True, null=True, upload_to='avatar/%Y/%m/%d/')
 	is_online = models.BooleanField(default=False, verbose_name=_('Online'))
-	is_accept = models.BooleanField(default=False)
+	city = models.ForeignKey(City, related_name='%(class)s_city', on_delete=models.CASCADE)
+	social_network = models.ForeignKey(SocialNetwork, related_name='%(class)s_social_network', on_delete=models.CASCADE)
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 	
@@ -42,15 +46,27 @@ class Friend(models.Model):
 	def __str__(self):
 		return '{} {}'.format(self.first_name, self.last_name)
 
+	def __unicode__(self):
+		return u'{} {}'.format(self.first_name, self.last_name)
+
 
 class Users(User):
+	phone_number = models.CharField(max_length=100)
 	avatar = models.FileField(blank=True, null=True, upload_to='avatar/%Y/%m/%d/')
-	is_online = models.BooleanField(default=False, verbose_name=_('Online'))
 	sex = models.SmallIntegerField(choices=SEX_OPTIONS, default=0)
 	relationship_status = models.SmallIntegerField(choices=RELATIONSHIP_STATUS, default=0)
+	is_online = models.BooleanField(default=False, verbose_name=_('Online'))
 	is_update = models.BooleanField(default=False)
-	relationship_with = models.ManyToManyField(Friend, blank=True, related_name='%(class)s_relationship_with')
+	city = models.ForeignKey(City, blank=True, null=True, related_name='%(class)s_city', on_delete=models.CASCADE)
+	social_network = models.ForeignKey(SocialNetwork, blank=True, null=True, related_name='%(class)s_social_network', on_delete=models.CASCADE)
 	friend = models.ManyToManyField(Friend, blank=True, related_name='%(class)s_friend')
+
+
+	def __str__(self):
+		return '{}'.format(self.username)
+	
+	def __unicode__(self):
+		return u'{}'.format(self.username)
 	
 	class Meta:
 		verbose_name = 'User'
