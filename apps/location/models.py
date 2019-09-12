@@ -4,8 +4,6 @@ from __future__ import unicode_literals
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from ..users.models import Users
-
 import uuid
 
 
@@ -64,7 +62,6 @@ class Address(models.Model):
 	street_no = models.TextField(max_length=30)
 	street_name = models.TextField(max_length=150)
 	is_default = models.BooleanField(default=False)
-	user = models.ForeignKey(Users, related_name='%(class)s_user', on_delete=models.CASCADE)
 	city = models.ForeignKey(City, related_name='%(class)s_city', on_delete=models.CASCADE)
 	district = models.ForeignKey(District, blank=True, related_name='%(class)s_district', on_delete=models.CASCADE)
 	ward = models.ForeignKey(Ward, blank=True, related_name='%(class)s_ward', on_delete=models.CASCADE)
