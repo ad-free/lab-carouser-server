@@ -26,10 +26,10 @@ class UsersAdmin(UserAdmin):
 	fieldsets = (
 		(None, {'fields': ('username', 'password')}),
 		(_('Personal info'), {
-			'fields': ('first_name', 'last_name', 'email', 'sex', 'relationship_status', 'social_network',)
+			'fields': ('first_name', 'last_name', 'email', 'sex', 'relationship_status', 'city', 'social_network')
 		}),
 		(_('Friend'), {
-			'fields': ('relationship_with',)
+			'fields': ('friend',)
 		}),
 	)
 	list_display = ('username', 'email', 'first_name', 'last_name', 'sex', 'relationship_status', 'last_login', 'is_update')

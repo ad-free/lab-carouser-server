@@ -4,10 +4,8 @@ from __future__ import unicode_literals
 from rest_framework import serializers
 
 
-class AnonymousFriendSerializer(serializers.Serializer):
-	""" Get list friend """
-	
-	page = serializers.IntegerField(default=1)
+class CityListSerializer(serializers.Serializer):
+	page = serializers.CharField(max_length=6, default=1)
 	
 	def create(self, validated_data):
 		pass

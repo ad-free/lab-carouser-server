@@ -174,17 +174,19 @@ class API:
 			'friend': {
 				'add': 'api_friend_add',
 				'remove': 'api_friend_remove',
-				'list': 'api_friend_list',
 				'anonymous': 'api_friend_anonymous',
 				'accept': 'api_friend_accept',
-				'accept_list': 'api_friend_accept_list',
+				'list': 'api_friend_list',
 			},
-			'location': {
-				'list': 'api_location_list',
+			'user': {
+				'list': 'api_user_list',
+			},
+			'city': {
+				'list': 'api_city_list',
 			},
 			'': {
 				'': 'Nothing here!'
 			}
 		}
 		
-		return apis.get(api_type, '').get(api_name, '')
+		return apis[api_type][api_name]
