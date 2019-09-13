@@ -27,7 +27,14 @@ class ProfileDetail(ViewSet):
 		self.commons = Commons()
 		self.status = Status()
 		self.message = ''
+<<<<<<< HEAD
+<<<<<<< HEAD
 		self.error_msg = _('Something wrong. Please try again.')
+=======
+>>>>>>> e164e79... Update and optimize
+=======
+		self.error_msg = _('Something wrong. Please try again.')
+>>>>>>> 40ba4e0... Update README.md
 	
 	def create(self, request):
 		self.commons.active_language(language=request.META.get('HTTP_LANGUAGE', getattr(settings, 'LANGUAGE_CODE')))

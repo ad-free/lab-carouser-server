@@ -17,8 +17,16 @@ from apps.commons.utils import Commons, Status, API
 from functools import partial
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 40ba4e0... Update README.md
 class FriendList(ViewSet):
 	""" Get friend list """
+=======
+class FriendList(APIView):
+	""" Update profile """
+>>>>>>> e164e79... Update and optimize
 	
 	authentication_classes = [TokenAuthentication]
 	permission_classes = [IsAuthenticated & partial(APIAccessPermission, API().get_api_name('friend', 'list'))]
@@ -32,12 +40,30 @@ class FriendList(ViewSet):
 		self.error_msg = _('Something wrong. Please try again.')
 	
 	@transaction.atomic()
+<<<<<<< HEAD
+<<<<<<< HEAD
 	def create(self, request):
 		serializer = self.serializer_class(data=request.data)
 		
 		if serializer.is_valid():
 			page = serializer.data['page']
 			obj_friends = request.user.friend.all()\
+=======
+	def post(self, request):
+		serializer = FriendListSerializer(data=self.request.data)
+		
+		if serializer.is_valid():
+			page = serializer.data['page']
+			obj_friends = self.request.user.friend.all()\
+>>>>>>> e164e79... Update and optimize
+=======
+	def create(self, request):
+		serializer = self.serializer_class(data=request.data)
+		
+		if serializer.is_valid():
+			page = serializer.data['page']
+			obj_friends = request.user.friend.all()\
+>>>>>>> 40ba4e0... Update README.md
 				.values(
 				'id', 'first_name', 'last_name', 'email', 'sex',
 				'social_network__facebook', 'social_network__twitter',
