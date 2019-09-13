@@ -14,7 +14,7 @@ INSTALLED_APPS += [
 	'apps.apis',
 	'apps.location',
 	'apps.users',
-	'apps.relationships',
+	'apps.social_network',
 ]
 
 TIME_ZONE = 'Asia/Ho_Chi_Minh'
@@ -74,16 +74,16 @@ JWT_AUTH = {
 	'JWT_AUTH_COOKIE': None,
 }
 
-DATABASES = {
-	'default': {
-		'ENGINE': 'django.db.backends.mysql',
-		'NAME': 'lab_carouser_server',
-		'USER': 'root',
-		'PASSWORD': 'admin123',
-		'HOST': '127.0.0.1',
-		'PORT': 33060,
-	}
-}
+# DATABASES = {
+# 	'default': {
+# 		'ENGINE': 'django.db.backends.mysql',
+# 		'NAME': 'lab_carouser_server',
+# 		'USER': 'root',
+# 		'PASSWORD': 'admin123',
+# 		'HOST': '127.0.0.1',
+# 		'PORT': 33060,
+# 	}
+# }
 
 CACHE_TTL = 60  # seconds
 

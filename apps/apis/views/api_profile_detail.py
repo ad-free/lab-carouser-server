@@ -19,7 +19,7 @@ from functools import partial
 
 class ProfileDetail(APIView):
 	authentication_classes = [TokenAuthentication]
-	permission_classes = [IsAuthenticated & partial(APIAccessPermission, API().get_api_name('location', 'list'))]
+	permission_classes = [IsAuthenticated & partial(APIAccessPermission, API().get_api_name('profile', 'detail'))]
 	renderer_classes = [JSONRenderer]
 	
 	def __init__(self, **kwargs):
@@ -28,33 +28,11 @@ class ProfileDetail(APIView):
 		self.status = Status()
 		self.error_msg = _('Something wrong. Please try again.')
 		self.message = ''
-		self.data = {
-			'first_name': '',
-			'last_name': '',
-			'email': '',
-			'sex': '',
-			'relationship_status': '',
-			'last_login': '',
-			'date_joined': '',
-			'city': '',
-			'district': '',
-			'ward': '',
-			'is_update': False
-		}
 	
 	def post(self, request):
 		self.commons.active_language(language=request.META.get('HTTP_LANGUAGE', getattr(settings, 'LANGUAGE_CODE')))
 		obj_user = self.request.user
-		try:
-			obj_address = Address.objects.get(user=obj_user)
-			self.data.update({
-				'city': obj_address.city__name,
-				'district': obj_address.district__name,
-				'ward': obj_address.ward__name
-			})
-		except Address.DoesNotExist:
-			self.commons.logs(level=2, message='{} {}'.format(obj_user.username, _('Address does not exists.')), name=__name__)
-		self.data.update({
+		data = {
 			'first_name': obj_user.first_name,
 			'last_name': obj_user.last_name,
 			'email': obj_user.email,
@@ -62,6 +40,11 @@ class ProfileDetail(APIView):
 			'relationship_status': obj_user.relationship_status,
 			'last_login': obj_user.last_login if obj_user.last_login else '',
 			'date_joined': obj_user.date_joined,
-			'is_update': obj_user.is_update
-		})
-		return self.commons.response(_status=self.status.HTTP_2000_OK, data=self.data)
+			'is_update': obj_user.is_update,
+			'city': obj_user.city_id,
+			'facebook': obj_user.social_network.facebook if obj_user.social_network else '',
+			'twitter': obj_user.social_network.twitter if obj_user.social_network else '',
+			'instagram': obj_user.social_network.instagram if obj_user.social_network else '',
+			'github': obj_user.social_network.github if obj_user.social_network else '',
+		}
+		return self.commons.response(_status=self.status.HTTP_2000_OK, data=data)

@@ -12,10 +12,10 @@ from .models import Friend, Staff, Users
 class FriendAdmin(admin.ModelAdmin):
 	fieldsets = (
 		('Personal info', {
-			'fields': ('first_name', 'last_name', 'phone_number', 'email', 'sex', 'avatar'),
+			'fields': ('first_name', 'last_name', 'phone_number', 'email', 'sex', 'avatar', 'city',),
 		}),
 	)
-	list_display = ('email', 'first_name', 'last_name', 'phone_number', 'sex', 'created_at', 'updated_at', 'is_online',)
+	list_display = ('email', 'first_name', 'last_name', 'phone_number', 'sex', 'city', 'created_at', 'updated_at', 'is_online',)
 	date_hierarchy = 'created_at'
 	search_fields = ('email', 'first_name', 'last_name', 'phone_number',)
 	list_filter = ('sex',)
@@ -25,12 +25,16 @@ class FriendAdmin(admin.ModelAdmin):
 class UsersAdmin(UserAdmin):
 	fieldsets = (
 		(None, {'fields': ('username', 'password')}),
-		(_('Personal info'), {'fields': ('first_name', 'last_name', 'email', 'sex', 'relationship_status')}),
-		(_('Friend'), {'fields': ('relationship_with',)}),
+		(_('Personal info'), {
+			'fields': ('first_name', 'last_name', 'email', 'sex', 'relationship_status', 'city', 'social_network')
+		}),
+		(_('Friend'), {
+			'fields': ('friend',)
+		}),
 	)
 	list_display = ('username', 'email', 'first_name', 'last_name', 'sex', 'relationship_status', 'last_login', 'is_update')
 	list_filter = ['date_joined', 'sex', 'relationship_status', 'is_update']
-	filter_horizontal = ('relationship_with',)
+	filter_horizontal = ('friend',)
 	exclude = ('groups',)
 	readonly_fields = ('is_online', 'is_update',)
 	date_hierarchy = 'date_joined'
