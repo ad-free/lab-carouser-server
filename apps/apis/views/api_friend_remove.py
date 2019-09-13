@@ -38,18 +38,15 @@ class RemoveFriend(APIView):
 		if serializer.is_valid():
 			try:
 				with transaction.atomic():
-					obj_friend = self.request.user.relationship_with.get(id=serializer.data['friend_id'])
-					obj_friend.is_accept = False
-					obj_friend.save()
-					self.request.user.relationship_with.remove(obj_friend)
-			except Exception as e:
-				self.commons.logs(level=2, message=str(e), name=__name__)
-				self.error_msg = _('Friend does not exists.')
-			else:
+					obj_friend = Friend.objects.get(id=serializer.data['friend_id'])
+					self.request.user.friend.remove(obj_friend)
 				return self.commons.response(
 					_status=self.status.HTTP_2000_OK,
 					message=_('Successfully deleted a friend.')
 				)
+			except Exception as e:
+				self.commons.logs(level=2, message=str(e), name=__name__)
+				self.error_msg = _('Friend does not exists.')
 		else:
 			self.error_msg = serializer.errors
 		return self.commons.response(
