@@ -17,7 +17,7 @@ from functools import partial
 
 class ProfileDetail(ViewSet):
 	""" Get profile detail """
-	
+
 	authentication_classes = [TokenAuthentication]
 	permission_classes = [IsAuthenticated & partial(APIAccessPermission, API().get_api_name('profile', 'detail'))]
 	renderer_classes = [JSONRenderer]
@@ -26,8 +26,8 @@ class ProfileDetail(ViewSet):
 		super().__init__(**kwargs)
 		self.commons = Commons()
 		self.status = Status()
-		self.message = ''
 		self.error_msg = _('Something wrong. Please try again.')
+		self.message = ''
 	
 	def create(self, request):
 		self.commons.active_language(language=request.META.get('HTTP_LANGUAGE', getattr(settings, 'LANGUAGE_CODE')))

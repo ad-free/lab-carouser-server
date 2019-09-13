@@ -26,7 +26,7 @@ class RemoveFriend(ViewSet):
 	permission_classes = [IsAuthenticated & partial(APIAccessPermission, API().get_api_name('friend', 'remove'))]
 	renderer_classes = [JSONRenderer]
 	serializer_class = RemoveFriendSerializer
-	
+
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
 		self.commons = Commons()

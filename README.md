@@ -1,36 +1,47 @@
 # lab-carouser-server
 
-#### Description
+## Description
 
 Features:
+
 1. Login
 2. Logout
 3. Register
-4. Add a new friend
-5. Remove a friend
-6. Profile detail
-7. Profile update
-8. User list
-9. Friend list
-10. City list
-11. Push notification **(coming soon)**
-12. Introduction **(coming soon)**
-13. News **(coming soon)**
-14. Support **(coming soon)**
-15. Contact **(coming soon)**
+4. Forgot password
+5. Add a new friend
+6. Remove a friend
+7. Profile detail
+8. Profile update
+9. User list
+10. Friend list
+11. City list
+12. Push notification **(coming soon)**
+13. Introduction **(coming soon)**
+14. News **(coming soon)**
+15. Support **(coming soon)**
+16. Contact **(coming soon)**
 
-#### Framework and Technology
+## Framework and Technology
 
-Language: HTML5, CSS3, Python, Javascript, jQuery, Angular, Nodejs,...
+Language:
 
-Framework: Django, Django rest framework, JWT,...
+- HTML5, CSS3, Javascript, jQuery
+- Nodejs, React, Typescript
+- Python
+- Redis, Logging, Cache,...
 
-#### Author
+Frameworks or Libraries:
 
-Nickname: Free
+- Django
+- Json Web Token
+- Angular
 
-Email: noname.spyware@gmail.com
+### Author
 
-#### License
+- Nickname: Free
 
-MIT
+- Email: noname.spyware@gmail.com
+
+### License
+
+- NOLICENSE

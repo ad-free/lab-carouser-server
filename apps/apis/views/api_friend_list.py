@@ -24,7 +24,7 @@ class FriendList(ViewSet):
 	permission_classes = [IsAuthenticated & partial(APIAccessPermission, API().get_api_name('friend', 'list'))]
 	renderer_classes = [JSONRenderer]
 	serializer_class = FriendListSerializer
-	
+
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
 		self.commons = Commons()
@@ -32,12 +32,12 @@ class FriendList(ViewSet):
 		self.error_msg = _('Something wrong. Please try again.')
 	
 	@transaction.atomic()
-	def create(self, request):
-		serializer = self.serializer_class(data=request.data)
+	def post(self, request):
+		serializer = FriendListSerializer(data=self.request.data)
 		
 		if serializer.is_valid():
 			page = serializer.data['page']
-			obj_friends = request.user.friend.all()\
+			obj_friends = self.request.user.friend.all()\
 				.values(
 				'id', 'first_name', 'last_name', 'email', 'sex',
 				'social_network__facebook', 'social_network__twitter',

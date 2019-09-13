@@ -7,10 +7,6 @@ from django.utils.translation import ugettext_lazy as _
 
 import dj_database_url
 import datetime
-import environ
-
-environ.Env.read_env()
-env = environ.Env()
 
 DEBUG = True
 
