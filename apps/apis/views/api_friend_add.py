@@ -15,11 +15,11 @@ from apps.commons.utils import Commons, Status, API
 
 from functools import partial
 
-from apps.users.models import Friend
+from apps.users.models import Friend, Users
 
 
 class AddFriend(APIView):
-	""" Update profile """
+	""" Add a new friend """
 	
 	authentication_classes = [TokenAuthentication]
 	permission_classes = [IsAuthenticated & partial(APIAccessPermission, API().get_api_name('friend', 'add'))]
@@ -36,15 +36,24 @@ class AddFriend(APIView):
 		
 		if serializer.is_valid(raise_exception=True):
 			try:
-				obj_friend = Friend.objects.get(id=serializer.data['friend_id'])
-				self.request.user.relationship_with.add(obj_friend)
+				obj_user = Users.objects.get(id=serializer.data['user_id'])
+				obj_friend, created = Friend.objects.update_or_create(
+					id=obj_user.id,
+					first_name=obj_user.first_name,
+					last_name=obj_user.last_name,
+					sex=obj_user.sex,
+					email=obj_user.email,
+					social_network=obj_user.social_network,
+					city=obj_user.city
+				)
+				self.request.user.friend.add(obj_friend)
 				return self.commons.response(
 					_status=self.status.HTTP_2000_OK,
 					message=_('You have successfully sent a friend request.')
 				)
-			except Friend.DoesNotExist as e:
+			except Users.DoesNotExist as e:
 				self.commons.logs(level=2, message=str(e), name=__name__)
-				self.error_msg = _('Friend does not exists.')
+				self.error_msg = _('The user does not exists.')
 			except Exception as e:
 				self.commons.logs(level=3, message=str(e), name=__name__)
 		else:
