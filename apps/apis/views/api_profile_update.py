@@ -24,14 +24,14 @@ class ProfileUpdate(ViewSet):
 	permission_classes = [IsAuthenticated & partial(APIAccessPermission, API().get_api_name('profile', 'update'))]
 	renderer_classes = [JSONRenderer]
 	serializer_class = ProfileUpdateSerializer
-	
+
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
 		self.status = Status()
 		self.commons = Commons()
 		self.message = ''
 		self.error_msg = _('Something wrong. Please try again.')
-	
+
 	@transaction.atomic()
 	def create(self, request):
 		self.commons.active_language(language=request.META.get('HTTP_LANGUAGE', getattr(settings, 'LANGUAGE_CODE')))

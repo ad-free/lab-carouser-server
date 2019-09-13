@@ -12,11 +12,12 @@ from rest_framework.viewsets import ViewSet
 from apps.users.models import Friend, Users
 
 from apps.apis.serializers.api_friend_add import AddFriendSerializer
-
 from apps.apis.utils import APIAccessPermission
 from apps.commons.utils import Commons, Status, API
 
 from functools import partial
+
+
 
 
 class AddFriend(ViewSet):
@@ -26,7 +27,7 @@ class AddFriend(ViewSet):
 	permission_classes = [IsAuthenticated & partial(APIAccessPermission, API().get_api_name('friend', 'add'))]
 	renderer_classes = [JSONRenderer]
 	serializer_class = AddFriendSerializer
-	
+
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
 		self.commons = Commons()
@@ -49,7 +50,7 @@ class AddFriend(ViewSet):
 					social_network=obj_user.social_network,
 					city=obj_user.city
 				)
-				request.user.friend.add(obj_friend)
+				self.request.user.friend.add(obj_friend)
 				return self.commons.response(
 					_status=self.status.HTTP_2000_OK,
 					message=_('You have successfully sent a friend request.')
