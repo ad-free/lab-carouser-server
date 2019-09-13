@@ -7,7 +7,7 @@ from rest_framework import serializers
 class AddFriendSerializer(serializers.Serializer):
 	""" Add friend """
 	
-	friend_id = serializers.UUIDField()
+	user_id = serializers.UUIDField()
 	
 	def create(self, validated_data):
 		pass

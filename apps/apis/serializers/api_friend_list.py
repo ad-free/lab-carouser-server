@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from rest_framework import serializers
 
 
-class ListFriendSerializer(serializers.Serializer):
+class FriendListSerializer(serializers.Serializer):
 	""" Get list friend """
 	
 	page = serializers.IntegerField(default=1)
