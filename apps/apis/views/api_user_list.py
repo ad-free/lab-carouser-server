@@ -39,7 +39,7 @@ class UserList(APIView):
 				.exclude(is_superuser=True)\
 				.exclude(id=self.request.user.id)\
 				.order_by('first_name', 'last_name')
-			
+
 			data = self.commons.paginator(obj=obj_friends, page=page, data_on_page=30)
 			return self.commons.response(
 				_status=self.status.HTTP_2000_OK,
