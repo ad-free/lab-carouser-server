@@ -19,7 +19,7 @@ from apps.users.models import Friend, Users
 
 
 class AddFriend(APIView):
-	""" Update profile """
+	""" Add a new friend """
 	
 	authentication_classes = [TokenAuthentication]
 	permission_classes = [IsAuthenticated & partial(APIAccessPermission, API().get_api_name('friend', 'add'))]
