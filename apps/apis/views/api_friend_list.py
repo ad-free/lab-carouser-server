@@ -18,7 +18,7 @@ from functools import partial
 
 
 class FriendList(APIView):
-	""" Update profile """
+	""" Get friend list """
 	
 	authentication_classes = [TokenAuthentication]
 	permission_classes = [IsAuthenticated & partial(APIAccessPermission, API().get_api_name('friend', 'list'))]

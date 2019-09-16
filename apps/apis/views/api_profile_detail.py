@@ -18,6 +18,8 @@ from functools import partial
 
 
 class ProfileDetail(APIView):
+	""" Get profile detail """
+	
 	authentication_classes = [TokenAuthentication]
 	permission_classes = [IsAuthenticated & partial(APIAccessPermission, API().get_api_name('profile', 'detail'))]
 	renderer_classes = [JSONRenderer]
