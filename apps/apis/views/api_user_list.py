@@ -17,7 +17,7 @@ from apps.users.models import Users
 
 
 class UserList(APIView):
-	""" Update profile """
+	""" Get user list """
 	
 	authentication_classes = [TokenAuthentication]
 	permission_classes = [IsAuthenticated & partial(APIAccessPermission, API().get_api_name('user', 'list'))]
