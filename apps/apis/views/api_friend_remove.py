@@ -20,7 +20,7 @@ from apps.users.models import Friend
 
 
 class RemoveFriend(APIView):
-	""" Update profile """
+	""" Remove a friend """
 	
 	authentication_classes = [TokenAuthentication]
 	permission_classes = [IsAuthenticated & partial(APIAccessPermission, API().get_api_name('friend', 'remove'))]
