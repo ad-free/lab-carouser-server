@@ -6,10 +6,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
-
-from apps.location.models import Address
+from rest_framework.viewsets import ViewSet
 
 from apps.apis.utils import APIAccessPermission
 from apps.commons.utils import Commons, Status, API
@@ -17,7 +15,7 @@ from apps.commons.utils import Commons, Status, API
 from functools import partial
 
 
-class ProfileDetail(APIView):
+class ProfileDetail(ViewSet):
 	""" Get profile detail """
 	
 	authentication_classes = [TokenAuthentication]
@@ -28,10 +26,10 @@ class ProfileDetail(APIView):
 		super().__init__(**kwargs)
 		self.commons = Commons()
 		self.status = Status()
-		self.error_msg = _('Something wrong. Please try again.')
 		self.message = ''
+		self.error_msg = _('Something wrong. Please try again.')
 	
-	def post(self, request):
+	def create(self, request):
 		self.commons.active_language(language=request.META.get('HTTP_LANGUAGE', getattr(settings, 'LANGUAGE_CODE')))
 		obj_user = self.request.user
 		data = {

@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
+from rest_framework.viewsets import ViewSet
+
+from apps.users.models import Friend, Users
 
 from apps.apis.serializers.api_friend_add import AddFriendSerializer
 
@@ -15,15 +18,14 @@ from apps.commons.utils import Commons, Status, API
 
 from functools import partial
 
-from apps.users.models import Friend, Users
 
-
-class AddFriend(APIView):
+class AddFriend(ViewSet):
 	""" Add a new friend """
 	
 	authentication_classes = [TokenAuthentication]
 	permission_classes = [IsAuthenticated & partial(APIAccessPermission, API().get_api_name('friend', 'add'))]
 	renderer_classes = [JSONRenderer]
+	serializer_class = AddFriendSerializer
 	
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
@@ -31,8 +33,9 @@ class AddFriend(APIView):
 		self.status = Status()
 		self.error_msg = _('Something wrong. Please try again.')
 	
-	def post(self, request):
-		serializer = AddFriendSerializer(data=self.request.data)
+	def create(self, request):
+		self.commons.active_language(language=request.META.get('HTTP_LANGUAGE', getattr(settings, 'LANGUAGE_CODE')))
+		serializer = self.serializer_class(data=request.data)
 		
 		if serializer.is_valid(raise_exception=True):
 			try:
@@ -46,7 +49,7 @@ class AddFriend(APIView):
 					social_network=obj_user.social_network,
 					city=obj_user.city
 				)
-				self.request.user.friend.add(obj_friend)
+				request.user.friend.add(obj_friend)
 				return self.commons.response(
 					_status=self.status.HTTP_2000_OK,
 					message=_('You have successfully sent a friend request.')
