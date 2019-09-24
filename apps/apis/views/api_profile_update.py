@@ -7,35 +7,35 @@ from django.db import transaction
 
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
+from rest_framework.viewsets import ViewSet
 
 from apps.apis.serializers.api_profile_update import ProfileUpdateSerializer
-
 from apps.apis.utils import APIAccessPermission
 from apps.commons.utils import Commons, Status, API
 
 from functools import partial
 
 
-class ProfileUpdate(APIView):
+class ProfileUpdate(ViewSet):
 	""" Update profile """
 	
 	authentication_classes = [TokenAuthentication]
 	permission_classes = [IsAuthenticated & partial(APIAccessPermission, API().get_api_name('profile', 'update'))]
 	renderer_classes = [JSONRenderer]
+	serializer_class = ProfileUpdateSerializer
 	
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
 		self.status = Status()
 		self.commons = Commons()
-		self.error_msg = _('Something wrong. Please try again.')
 		self.message = ''
+		self.error_msg = _('Something wrong. Please try again.')
 	
 	@transaction.atomic()
-	def post(self, request):
+	def create(self, request):
 		self.commons.active_language(language=request.META.get('HTTP_LANGUAGE', getattr(settings, 'LANGUAGE_CODE')))
-		serializer = ProfileUpdateSerializer(data=self.request.data)
+		serializer = self.serializer_class(data=self.request.data)
 		if serializer.is_valid():
 			self.error_msg = ''
 			obj_user = self.request.user
