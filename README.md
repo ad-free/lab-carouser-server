@@ -28,13 +28,14 @@ Language:
 - HTML5, CSS3, Javascript, jQuery
 - Nodejs, React, Typescript
 - Python
-- Redis, Logging, Cache,...
 
 Frameworks or Libraries:
 
 - Django
 - Json Web Token
 - Angular
+- Redis, Logging, Cache,...
+- MQTT broker
 
 ### Author
 
@@ -44,4 +45,10 @@ Frameworks or Libraries:
 
 ### License
 
+<<<<<<< HEAD
 - NOLICENSE
+=======
+#### License
+
+MIT
+>>>>>>> cbfa2ed... Update README.md

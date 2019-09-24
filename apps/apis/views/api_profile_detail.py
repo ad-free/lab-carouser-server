@@ -26,8 +26,8 @@ class ProfileDetail(ViewSet):
 		super().__init__(**kwargs)
 		self.commons = Commons()
 		self.status = Status()
-		self.error_msg = _('Something wrong. Please try again.')
 		self.message = ''
+		self.error_msg = _('Something wrong. Please try again.')
 	
 	def create(self, request):
 		self.commons.active_language(language=request.META.get('HTTP_LANGUAGE', getattr(settings, 'LANGUAGE_CODE')))
