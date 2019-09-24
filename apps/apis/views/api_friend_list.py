@@ -32,12 +32,12 @@ class FriendList(ViewSet):
 		self.error_msg = _('Something wrong. Please try again.')
 	
 	@transaction.atomic()
-	def post(self, request):
-		serializer = FriendListSerializer(data=self.request.data)
+	def create(self, request):
+		serializer = self.serializer_class(data=request.data)
 		
 		if serializer.is_valid():
 			page = serializer.data['page']
-			obj_friends = self.request.user.friend.all()\
+			obj_friends = request.user.friend.all()\
 				.values(
 				'id', 'first_name', 'last_name', 'email', 'sex',
 				'social_network__facebook', 'social_network__twitter',
