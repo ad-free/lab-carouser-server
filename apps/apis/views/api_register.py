@@ -7,8 +7,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.hashers import make_password
 from django.db import transaction
 
-from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
+from rest_framework.viewsets import ViewSet
 
 from apps.apis.utils import APIAccessPermission
 from apps.users.models import Users
@@ -20,24 +20,25 @@ from apps.commons.utils import Commons, Status, API
 from functools import partial
 
 
-class Register(APIView):
+class Register(ViewSet):
 	""" Register your account. """
 	
 	authentication_classes = []
 	permission_classes = [partial(APIAccessPermission, API().get_api_name('auth', 'register'))]
 	renderer_classes = [JSONRenderer]
+	serializer_class = RegisterSerializer
 	
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
 		self.status = Status()
 		self.commons = Commons()
-		self.error_msg = _('Something wrong. Please try again.')
 		self.message = _('Congratulations. You have successfully registered.')
-	
+		self.error_msg = _('Something wrong. Please try again.')
+		
 	@transaction.atomic()
-	def post(self, request):
+	def create(self, request):
 		self.commons.active_language(language=request.META.get('HTTP_LANGUAGE', getattr(settings, 'LANGUAGE_CODE')))
-		serializer = RegisterSerializer(data=self.request.data)
+		serializer = self.serializer_class(data=self.request.data)
 		if serializer.is_valid():
 			if not serializer.compare_pwd(data=request.data):
 				obj_user, created = Users.objects.get_or_create(username=serializer.data['username'], defaults={

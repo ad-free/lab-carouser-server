@@ -6,8 +6,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
+from rest_framework.viewsets import ViewSet
 
 from apps.apis.serializers.api_friend_list import FriendListSerializer
 
@@ -17,12 +17,13 @@ from apps.commons.utils import Commons, Status, API
 from functools import partial
 
 
-class FriendList(APIView):
+class FriendList(ViewSet):
 	""" Get friend list """
 	
 	authentication_classes = [TokenAuthentication]
 	permission_classes = [IsAuthenticated & partial(APIAccessPermission, API().get_api_name('friend', 'list'))]
 	renderer_classes = [JSONRenderer]
+	serializer_class = FriendListSerializer
 	
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
@@ -31,12 +32,12 @@ class FriendList(APIView):
 		self.error_msg = _('Something wrong. Please try again.')
 	
 	@transaction.atomic()
-	def post(self, request):
-		serializer = FriendListSerializer(data=self.request.data)
+	def create(self, request):
+		serializer = self.serializer_class(data=request.data)
 		
 		if serializer.is_valid():
 			page = serializer.data['page']
-			obj_friends = self.request.user.friend.all()\
+			obj_friends = request.user.friend.all()\
 				.values(
 				'id', 'first_name', 'last_name', 'email', 'sex',
 				'social_network__facebook', 'social_network__twitter',
