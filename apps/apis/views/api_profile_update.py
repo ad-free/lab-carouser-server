@@ -47,7 +47,11 @@ class ProfileUpdate(ViewSet):
 			obj_user.city_id = serializer.data['city_id']
 			obj_user.is_update = True
 			obj_user.save()
-			return self.commons.response(_status=self.status.HTTP_2000_OK, message=_('Update successful.'), error_msg=self.error_msg)
+			return self.commons.response(
+				_status=self.status.HTTP_2000_OK,
+				message=_('Update successful.'),
+				error_msg=self.error_msg
+			)
 		else:
 			self.error_msg = serializer.errors
 		return self.commons.response(_status=self.status.HTTP_4000_BAD_REQUEST, error_msg=self.error_msg)
