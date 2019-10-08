@@ -32,3 +32,5 @@ Nickname: Free
 Email: noname.spyware@gmail.com
 
 #### License
+
+MIT
