@@ -6,8 +6,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
+from rest_framework.viewsets import ViewSet
 
 from apps.apis.serializers.api_friend_remove import RemoveFriendSerializer
 
@@ -19,12 +19,13 @@ from functools import partial
 from apps.users.models import Friend
 
 
-class RemoveFriend(APIView):
+class RemoveFriend(ViewSet):
 	""" Remove a friend """
 	
 	authentication_classes = [TokenAuthentication]
 	permission_classes = [IsAuthenticated & partial(APIAccessPermission, API().get_api_name('friend', 'remove'))]
 	renderer_classes = [JSONRenderer]
+	serializer_class = RemoveFriendSerializer
 	
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
@@ -32,14 +33,14 @@ class RemoveFriend(APIView):
 		self.status = Status()
 		self.error_msg = _('Something wrong. Please try again.')
 	
-	def post(self, request):
-		serializer = RemoveFriendSerializer(data=self.request.data)
+	def create(self, request):
+		serializer = self.serializer_class(data=request.data)
 		
 		if serializer.is_valid():
 			try:
 				with transaction.atomic():
 					obj_friend = Friend.objects.get(id=serializer.data['friend_id'])
-					self.request.user.friend.remove(obj_friend)
+					request.user.friend.remove(obj_friend)
 				return self.commons.response(
 					_status=self.status.HTTP_2000_OK,
 					message=_('Successfully deleted a friend.')

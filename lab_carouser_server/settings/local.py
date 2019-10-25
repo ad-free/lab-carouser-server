@@ -81,11 +81,11 @@ DATABASES['default'].update(prod_db)
 # DATABASES = {
 # 	'default': {
 # 		'ENGINE': 'django.db.backends.mysql',
-# 		'NAME': 'lab_carouser_server',
-# 		'USER': 'root',
-# 		'PASSWORD': 'admin123',
-# 		'HOST': '127.0.0.1',
-# 		'PORT': 33060,
+# 		'NAME': env.str('DB_NAME', None),
+# 		'USER': env.str('DB_USER', None),
+# 		'PASSWORD': env.str('DB_PASSWORD', None),
+# 		'HOST': env.str('DB_HOST', None),
+# 		'PORT': env.int('DB_PORT', None),
 # 	}
 # }
 
