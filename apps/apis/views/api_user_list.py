@@ -17,7 +17,11 @@ from apps.users.models import Users
 
 
 class UserList(APIView):
+<<<<<<< HEAD:apps/apis/views/api_user_list.py
 	""" Update profile """
+=======
+	""" Get user list """
+>>>>>>> df9848c2df82bd9bebb274c83859824521007388:apps/apis/views/api_friend_anonymous.py
 	
 	authentication_classes = [TokenAuthentication]
 	permission_classes = [IsAuthenticated & partial(APIAccessPermission, API().get_api_name('user', 'list'))]
