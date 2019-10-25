@@ -17,14 +17,6 @@ from apps.commons.utils import Commons, Status, API
 
 from functools import partial
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-from apps.users.models import Friend, Users
-
->>>>>>> e164e79... Update and optimize
-=======
->>>>>>> 40ba4e0... Update README.md
 
 class AddFriend(ViewSet):
 	""" Add a new friend """
@@ -56,15 +48,7 @@ class AddFriend(ViewSet):
 					social_network=obj_user.social_network,
 					city=obj_user.city
 				)
-<<<<<<< HEAD
-<<<<<<< HEAD
 				request.user.friend.add(obj_friend)
-=======
-				self.request.user.friend.add(obj_friend)
->>>>>>> e164e79... Update and optimize
-=======
-				request.user.friend.add(obj_friend)
->>>>>>> 40ba4e0... Update README.md
 				return self.commons.response(
 					_status=self.status.HTTP_2000_OK,
 					message=_('You have successfully sent a friend request.')

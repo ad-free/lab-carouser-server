@@ -40,15 +40,7 @@ class RemoveFriend(ViewSet):
 			try:
 				with transaction.atomic():
 					obj_friend = Friend.objects.get(id=serializer.data['friend_id'])
-<<<<<<< HEAD
-<<<<<<< HEAD
 					request.user.friend.remove(obj_friend)
-=======
-					self.request.user.friend.remove(obj_friend)
->>>>>>> e164e79... Update and optimize
-=======
-					request.user.friend.remove(obj_friend)
->>>>>>> 40ba4e0... Update README.md
 				return self.commons.response(
 					_status=self.status.HTTP_2000_OK,
 					message=_('Successfully deleted a friend.')

@@ -5,18 +5,19 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import logout
 
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.renderers import JSONRenderer
+from rest_framework.viewsets import ViewSet
 
 from apps.apis.utils import APIAccessPermission
 from apps.commons.utils import Commons, Status, API
 
 from functools import partial
+import base64
 
 
-class Logout(APIView):
+class Logout(ViewSet):
 	""" Logout to system """
 	
 	authentication_classes = [TokenAuthentication]
@@ -30,10 +31,10 @@ class Logout(APIView):
 		self.message = _('Logout successful.')
 		self.error_msg = _('You must be login to system.')
 	
-	def post(self, request):
+	def create(self, request):
 		self.commons.active_language(language=request.META.get('HTTP_LANGUAGE', getattr(settings, 'LANGUAGE_CODE')))
 		try:
-			request.user.auth_token.delete()
+			self.request.user.auth_token.delete()
 			logout(request)
 			self.commons.logs(level=1, message=self.message, name=__name__)
 			return self.commons.response(_status=self.status.HTTP_2000_OK, message=self.message)

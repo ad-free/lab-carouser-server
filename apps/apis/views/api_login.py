@@ -24,7 +24,7 @@ class Login(ViewSet):
 	permission_classes = [partial(APIAccessPermission, API().get_api_name('auth', 'login'))]
 	renderer_classes = [JSONRenderer]
 	serializer_class = LoginSerializer
-
+	
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
 		self.token = ''
@@ -32,7 +32,7 @@ class Login(ViewSet):
 		self.commons = Commons()
 		self.message = _('You are successfully logged in.')
 		self.error_msg = _('Something wrong. Please try again.')
-
+	
 	def create(self, request):
 		self.commons.active_language(language=request.META.get('HTTP_LANGUAGE', getattr(settings, 'LANGUAGE_CODE')))
 		serializer = self.serializer_class(data=request.data)

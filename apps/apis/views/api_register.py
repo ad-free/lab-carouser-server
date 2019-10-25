@@ -27,14 +27,14 @@ class Register(ViewSet):
 	permission_classes = [partial(APIAccessPermission, API().get_api_name('auth', 'register'))]
 	renderer_classes = [JSONRenderer]
 	serializer_class = RegisterSerializer
-
+	
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
 		self.status = Status()
 		self.commons = Commons()
 		self.message = _('Congratulations. You have successfully registered.')
 		self.error_msg = _('Something wrong. Please try again.')
-
+		
 	@transaction.atomic()
 	def create(self, request):
 		self.commons.active_language(language=request.META.get('HTTP_LANGUAGE', getattr(settings, 'LANGUAGE_CODE')))

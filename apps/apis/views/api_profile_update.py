@@ -5,17 +5,10 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.db import transaction
 
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.renderers import JSONRenderer
-<<<<<<< HEAD
-<<<<<<< HEAD
 from rest_framework.viewsets import ViewSet
-=======
->>>>>>> e164e79... Update and optimize
-=======
-from rest_framework.viewsets import ViewSet
->>>>>>> 40ba4e0... Update README.md
 
 from apps.apis.serializers.api_profile_update import ProfileUpdateSerializer
 from apps.apis.utils import APIAccessPermission
@@ -27,7 +20,7 @@ from functools import partial
 class ProfileUpdate(ViewSet):
 	""" Update profile """
 	
-	authentication_classes = [JSONWebTokenAuthentication]
+	authentication_classes = [TokenAuthentication]
 	permission_classes = [IsAuthenticated & partial(APIAccessPermission, API().get_api_name('profile', 'update'))]
 	renderer_classes = [JSONRenderer]
 	serializer_class = ProfileUpdateSerializer
@@ -54,21 +47,11 @@ class ProfileUpdate(ViewSet):
 			obj_user.city_id = serializer.data['city_id']
 			obj_user.is_update = True
 			obj_user.save()
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 40ba4e0... Update README.md
 			return self.commons.response(
 				_status=self.status.HTTP_2000_OK,
 				message=_('Update successful.'),
 				error_msg=self.error_msg
 			)
-<<<<<<< HEAD
-=======
-			return self.commons.response(_status=self.status.HTTP_2000_OK, message=_('Update successful.'), error_msg=self.error_msg)
->>>>>>> e164e79... Update and optimize
-=======
->>>>>>> 40ba4e0... Update README.md
 		else:
 			self.error_msg = serializer.errors
 		return self.commons.response(_status=self.status.HTTP_4000_BAD_REQUEST, error_msg=self.error_msg)

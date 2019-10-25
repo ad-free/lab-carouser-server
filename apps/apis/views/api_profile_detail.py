@@ -28,7 +28,7 @@ class ProfileDetail(ViewSet):
 		self.status = Status()
 		self.message = ''
 		self.error_msg = _('Something wrong. Please try again.')
-
+	
 	def create(self, request):
 		self.commons.active_language(language=request.META.get('HTTP_LANGUAGE', getattr(settings, 'LANGUAGE_CODE')))
 		obj_user = self.request.user
