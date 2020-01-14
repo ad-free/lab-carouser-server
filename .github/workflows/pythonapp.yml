@@ -16,7 +16,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt update && sudo apt upgrade -y
-        sudo apt install libmysqlclient-dev -y
+        sudo apt install libpq-dev python-dev libmysqlclient-dev -y
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Test with pytest
