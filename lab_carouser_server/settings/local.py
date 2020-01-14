@@ -11,7 +11,9 @@ import datetime
 DEBUG = True
 
 INSTALLED_APPS += [
+	'rest_framework',
 	'rest_framework.authtoken',
+	'schema_graph',
 	'apps.apis',
 	'apps.location',
 	'apps.users',
