@@ -1,4 +1,8 @@
-# lab-carouser-server
+![GitHub repo size](https://img.shields.io/github/repo-size/ad-free/lab-carouser-server)
+[![GitHub issues](https://img.shields.io/github/issues/ad-free/lab-carouser-server)](https://github.com/ad-free/lab-carouser-server/issues)
+![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed-raw/ad-free/lab-carouser-server)
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/ad-free/lab-carouser-server/master)
+[![GitHub license](https://img.shields.io/github/license/ad-free/lab-carouser-server)](https://github.com/ad-free/lab-carouser-server/blob/master/LICENSE)
 
 ## Description
 
@@ -41,7 +45,3 @@ Frameworks or Libraries:
 - Nickname: Free
 
 - Email: noname.spyware@gmail.com
-
-### License
-
-- NOLICENSE
