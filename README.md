@@ -24,6 +24,7 @@ Features:
 14. News **(coming soon)**
 15. Support **(coming soon)**
 16. Contact **(coming soon)**
+17. **Machine Learning:** Data analysis **(coming soone)**
 
 ## Framework and Technology
 
@@ -37,11 +38,16 @@ Language:
 Frameworks or Libraries:
 
 - Django
-- Json Web Token
+- JWT
 - Angular
+- React
 
 ### Author
 
 - Nickname: Free
 
-- Email: noname.spyware@gmail.com
+- Email: [noname.spyware@gmail.com](mailto:noname.spyware@gmail.com)
+
+### License
+
+&copy; [MIT](LICENSE) 
