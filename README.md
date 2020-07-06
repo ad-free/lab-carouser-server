@@ -24,7 +24,7 @@ Features:
 14. News **(coming soon)**
 15. Support **(coming soon)**
 16. Contact **(coming soon)**
-17. **Machine Learning:** Data analysis **(coming soone)**
+17. **Machine Learning:** Data analysis **(coming soon)**
 
 ## Framework and Technology
 
