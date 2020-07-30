@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from .base import *
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
+from corsheaders.defaults import default_headers
 
 import dj_database_url
 import datetime
@@ -11,8 +12,29 @@ import datetime
 DEBUG = False
 
 ALLOWED_HOSTS = ['172.17.0.1', '127.0.0.1', '172.16.2.247']
+# CORS_ORIGIN_ALLOW_ALL = True
+
+
+CORS_ORIGIN_WHITELIST = [
+    "http://127.0.0.1:8080",
+    "http://127.0.0.1:8000"
+]
+
+CORS_ALLOW_METHODS = [
+    # 'DELETE',
+    'GET',
+    # 'OPTIONS',
+    # 'PATCH',
+    'POST',
+    # 'PUT',
+]
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'gis',
+]
 
 INSTALLED_APPS += [
+    'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
     'schema_graph',
